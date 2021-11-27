@@ -1,0 +1,99 @@
+---
+title: "Iris Visualization"
+author: "Kwasie Agbemadon"
+date: "7/1/2021"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+iris = iris
+```
+
+Info
+```{r}
+summary(iris)
+iris.setosa = subset(iris, iris$Species == 'setosa')
+iris.versicolor = subset(iris, iris$Species == 'versicolor')
+iris.virginica = subset(iris, iris$Species == 'virginica')
+aggregate(Sepal.Length~Species,data=iris,sd)
+aggregate(Sepal.Width~Species,data=iris,sd)
+aggregate(Petal.Length~Species,data=iris,sd)
+aggregate(Petal.Width~Species,data=iris,sd)
+```
+
+Histogram
+
+```{r}
+alpha = .2
+binwidth = .15
+c = ggplot(iris, aes(Sepal.Length, color = Species))
+c + geom_histogram(data=iris.setosa, fill = 'red', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.versicolor, fill = 'blue', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.virginica, fill = 'green', alpha = alpha, binwidth = binwidth) +
+  labs(x = 'Sepal Length', y = 'Count', title = 'Sepal Lengths Histogram') +
+  theme(plot.title = element_text(hjust = .5, size = 15))
+
+c = ggplot(iris, aes(Sepal.Width, color = Species))
+c + geom_histogram(data=iris.setosa, fill = 'red', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.versicolor, fill = 'blue', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.virginica, fill = 'green', alpha = alpha, binwidth = binwidth) +
+  labs(x = 'Sepal Width', y = 'Count', title = 'Sepal Widths Histogram') +
+  theme(plot.title = element_text(hjust = .5, size = 15))
+
+c = ggplot(iris, aes(Petal.Length, color = Species))
+c + geom_histogram(data=iris.setosa, fill = 'red', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.versicolor, fill = 'blue', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.virginica, fill = 'green', alpha = alpha, binwidth = binwidth) +
+  labs(x = 'Pedal Length', y = 'Count', title = 'Petal Lengths Histogram') +
+  theme(plot.title = element_text(hjust = .5, size = 15))
+
+c = ggplot(iris, aes(Petal.Width, color = Species))
+c + geom_histogram(data=iris.setosa, fill = 'red', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.versicolor, fill = 'blue', alpha = alpha, binwidth = binwidth) + 
+  geom_histogram(data=iris.virginica, fill = 'green', alpha = alpha, binwidth = binwidth) +
+  labs(x = 'Petal Width', y = 'Count', title = 'Petal Widths Histogram') +
+  theme(plot.title = element_text(hjust = .5, size = 15))
+```
+
+Boxplot
+
+```{r}
+colors = c('red','green','blue')
+ggplot(iris, aes(Species,Sepal.Length,fill=Species)) + geom_boxplot(notch=T) + scale_fill_manual(values=colors) + labs(y='Sepal Length', title='Boxplot of Sepal Length') + theme(plot.title = element_text(hjust = .5, size = 15))
+ggplot(iris, aes(Species,Sepal.Width,fill=Species)) + geom_boxplot(notch=T) + scale_fill_manual(values=colors) + labs(y='Sepal Width', title='Boxplot of Sepal Width') + theme(plot.title = element_text(hjust = .5, size = 15))
+ggplot(iris, aes(Species,Petal.Length,fill=Species)) + geom_boxplot(notch=T) + scale_fill_manual(values=colors) + labs(y='Petal Length', title='Boxplot of Petal Length') + theme(plot.title = element_text(hjust = .5, size = 15))
+ggplot(iris, aes(Species,Petal.Width,fill=Species)) + geom_boxplot() + scale_fill_manual(values=colors) + labs(y='Petal Width', title='Boxplot of Petal Length') + theme(plot.title = element_text(hjust = .5, size = 15))
+```
+
+Scatter Plot
+
+```{r}
+ggplot(iris, aes(Sepal.Length,Sepal.Width)) + geom_point(aes(colour=factor(Species))) + labs(x='Length',y='Width',title='Sepal Plot',color='Species') + theme(plot.title = element_text(hjust = .5, size = 15))
+ggplot(iris, aes(Petal.Length,Petal.Width)) + geom_point(aes(colour=factor(Species))) + labs(x='Length',y='Width',title='Petal Plot',color='Species') + theme(plot.title = element_text(hjust = .5, size = 15))
+```
+
+Violin Plot
+
+```{r}
+s.l = ggplot(iris, aes(Species,Sepal.Length)) + geom_violin(aes(fill=Species),trim=F)
+s.w = ggplot(iris, aes(Species,Sepal.Width)) + geom_violin(aes(fill=Species),trim=F)
+p.l = ggplot(iris, aes(Species,Petal.Length)) + geom_violin(aes(fill=Species),trim=F)
+p.w = ggplot(iris, aes(Species,Petal.Width)) + geom_violin(aes(fill=Species),trim=F)
+s.l + geom_boxplot(width=alpha/2)
+s.w + geom_boxplot(width=alpha/2)
+p.l + geom_boxplot(width=alpha/2)
+p.w + geom_boxplot(width=alpha/2)
+```
+
+```{r}
+dotplot = geom_dotplot(binaxis='y',stackdir='center',dotsize=1)
+s.l + dotplot
+s.w + dotplot
+p.l + dotplot
+p.w + dotplot
+```
+
+From our visualizations, I can observe that Setosa flowers have short sepals and petals but wide sepals. Virginica is the biggest flower type, while Versicolor is in the middle. The sepals in versicolor and virginica are narrow af. Also, Versicolor and Virignica have around the same sepal lengths based on the point graph.
+
+Petal Width has small standard deviations on all factors, while Sepal and Petal Length has larger standard deviations.
